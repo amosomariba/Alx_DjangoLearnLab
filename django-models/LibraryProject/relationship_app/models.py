@@ -1,11 +1,13 @@
 from django.db import models
 
+
 # Author Model
 class Author(models.Model):
     name = models.CharField(max_length=100)  # CharField for the author's name
 
     def __str__(self):
-        return self.name  # String representation of the Author instance
+        return self.name
+
 
 # Book Model
 class Book(models.Model):
@@ -13,7 +15,8 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)  # ForeignKey to Author
 
     def __str__(self):
-        return self.title  # String representation of the Book instance
+        return self.title
+
 
 # Library Model
 class Library(models.Model):
@@ -21,12 +24,15 @@ class Library(models.Model):
     books = models.ManyToManyField(Book)  # ManyToManyField to Book
 
     def __str__(self):
-        return self.name  # String representation of the Library instance
+        return self.name
+
 
 # Librarian Model
 class Librarian(models.Model):
     name = models.CharField(max_length=100)  # CharField for the librarian's name
-    library = models.OneToOneField(Library, on_delete=models.CASCADE)  # OneToOneField to Library
+    library = models.OneToOneField(
+        Library, on_delete=models.CASCADE
+    )  # OneToOneField to Library
 
     def __str__(self):
-        return self.name  # String representation of the Librarian instance
+        return self.name
