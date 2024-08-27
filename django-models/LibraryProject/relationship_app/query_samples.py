@@ -1,18 +1,20 @@
-from relationship_app.models import Author, Book, Library, Librarian
-import django
-from django.conf import settings
+# Import necessary models
+from .models import Library, Author, Librarian, Book
 
-def query_all_books_by_author(author_name):
-    author = Author.objects.get(name=author_name)
-    books = Book.objects.filter(author=author)
-    return books
+# Fetch all books by a specific author
+books = Book.objects.filter(author__name='Example')
 
-def list_all_books_in_library(library_name):
-    library = Library.objects.get(name=library_name)
-    books = library.books.all()
-    return books
+# Fetch a specific library by name
+library = Library.objects.get(name='library_name')
 
-def retrieve_librarian_for_library(library_name):
-    library = Library.objects.get(name=library_name)
-    librarian = Librarian.objects.get(library=library)
-    return librarian
+# Fetch all books in the specified library
+library_books = Book.objects.filter(library=library)
+
+# Fetch a specific author by name
+author = Author.objects.get(name='author_name')
+
+# Fetch all books by the specific author
+author_books = Book.objects.filter(author=author)
+
+# Fetch a librarian for a specific library
+librarian = Librarian.objects.get(library=library)

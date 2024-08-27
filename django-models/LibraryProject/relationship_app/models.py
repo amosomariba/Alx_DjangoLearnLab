@@ -1,32 +1,34 @@
 from django.db import models
 
-# Author Model
+# Create your models here.
+from django.db import models
+
 class Author(models.Model):
-    name = models.CharField(max_length=100)  # CharField for the author's name
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name  # String representation of the Author instance
+        return self.name
 
-# Book Model
+
 class Book(models.Model):
-    title = models.CharField(max_length=200)  # CharField for the book's title
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)  # ForeignKey to Author
+    title = models.CharField(max_length=200)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title  # String representation of the Book instance
+        return self.title
 
-# Library Model
+
 class Library(models.Model):
-    name = models.CharField(max_length=100)  # CharField for the library's name
-    books = models.ManyToManyField(Book)  # ManyToManyField to Book
+    name = models.CharField(max_length=100)
+    books = models.ManyToManyField(Book)
 
     def __str__(self):
-        return self.name  # String representation of the Library instance
+        return self.name
 
-# Librarian Model
+
 class Librarian(models.Model):
-    name = models.CharField(max_length=100)  # CharField for the librarian's name
-    library = models.OneToOneField(Library, on_delete=models.CASCADE)  # OneToOneField to Library
+    name = models.CharField(max_length=100)
+    library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name  # String representation of the Librarian instance
+        return self.name
