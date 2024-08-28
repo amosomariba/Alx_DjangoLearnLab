@@ -1,0 +1,12 @@
+[MASTER]
+# List of plugins to load
+load-plugins=pylint_django
+
+[MESSAGES CONTROL]
+# Disable the following messages (if needed)
+disable=missing-docstring,invalid-name
+
+[Django]
+# Specify the Django settings module
+django-settings-module=LibraryProject.settings
+
