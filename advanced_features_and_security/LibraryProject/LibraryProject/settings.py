@@ -165,3 +165,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # LibraryProject/LibraryProject/settings.py
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+
+# Security settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
