@@ -8,6 +8,7 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+
 # Book model represents individual books
 # Each book is linked to an author via a ForeignKey
 class Book(models.Model):
