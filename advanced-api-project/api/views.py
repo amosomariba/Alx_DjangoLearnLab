@@ -6,7 +6,13 @@ from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-
+import django_filters
+from .models import Book
+from .serializers import BookSerializer
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter
 
 
 # ListView: Retrieve all books
@@ -89,3 +95,61 @@ class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]  # Restrict deletion to authenticated users
+
+class BookFilter(django_filters.FilterSet):
+    title = django_filters.CharFilter(lookup_expr='icontains')
+    author = django_filters.CharFilter(lookup_expr='icontains')
+    publication_year = django_filters.NumberFilter()
+
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publication_year']
+
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filterset_class = BookFilter
+
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filterset_class = BookFilter
+    search_fields = ['title', 'author']  # Enable search on these fields
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filterset_class = BookFilter
+    search_fields = ['title', 'author']
+    filter_backends = (SearchFilter, DjangoFilterBackend, OrderingFilter)
+    ordering_fields = ['title', 'publication_year']  # Allow ordering by these fields
+    ordering = ['title']  # Default ordering
+
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    filterset_class = BookFilter
+    search_fields = ['title', 'author']
+    filter_backends = (SearchFilter, DjangoFilterBackend, OrderingFilter)
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']
+
+
+### Filtering, Searching, and Ordering
+
+# **Filtering**:
+# - Filter by `title`: `?title=<value>`
+# - Filter by `author`: `?author=<value>`
+# - Filter by `publication_year`: `?publication_year=<value>`
+
+# **Searching**:
+# - Search within `title` and `author` fields using `?search=<value>`
+
+# **Ordering**:
+# - Order by `title`: `?ordering=title`
+# - Order by `publication_year`: `?ordering=publication_year`
