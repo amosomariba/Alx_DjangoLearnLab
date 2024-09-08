@@ -20,6 +20,7 @@ from .serializers import BookSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 import django_filters
+from django_filters import rest_framework
 
 
 # ListView: Retrieve all books
