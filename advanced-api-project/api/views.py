@@ -28,6 +28,9 @@ from .serializers import BookSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 import django_filters
+filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+filter_backends = [filters.OrderingFilter]
+filter_backends = [filters.SearchFilter]
 
 
 
