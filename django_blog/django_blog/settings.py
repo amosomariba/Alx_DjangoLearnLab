@@ -129,24 +129,18 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#
 STATIC_URL = '/static/'
 
-#
-# settings.py
-
-STATIC_URL = '/static/'
-
-# Define where static files will be collected during production
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Define additional locations for static files during development
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / "blog/static",
 ]
 
-# Media files (optional, if using media uploads)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'home'
+
+LOGOUT_REDIRECT_URL = 'login'
 
