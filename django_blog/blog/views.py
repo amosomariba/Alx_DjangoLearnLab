@@ -11,6 +11,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import Comment, Post
 from .forms import CommentForm
+from .forms import CustomUserCreationForm
+
 
 # Registration View
 def register(request):
