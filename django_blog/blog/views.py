@@ -110,21 +110,7 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'blog/register.html', {'form': form})
 
-def login_user(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, 'Invalid username or password.')
-    return render(request, 'blog/login.html')
 
-def logout_user(request):
-    logout(request)
-    return redirect('login')
 
 @login_required
 def profile(request):
@@ -252,56 +238,4 @@ class PostByTagListView(ListView):
         context['tag'] = Tag.objects.get(slug=tag_slug)
         return context
     
-    # views.py
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
-from .models import Post
-
-# List all posts
-class PostListView(ListView):
-    model = Post
-    template_name = 'blog/post_list.html'  # blog/post_list.html
-    context_object_name = 'posts'
-    ordering = ['-created_at']
-
-# Detail view for a single post
-class PostDetailView(DetailView):
-    model = Post
-    template_name = 'blog/post_detail.html'  # blog/post_detail.html
-
-# Create a new post
-class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = ['title', 'content']
-    template_name = 'blog/post_form.html'  # blog/post_form.html
-
-    # Automatically set the author to the logged-in user
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-# Update an existing post
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Post
-    fields = ['title', 'content']
-    template_name = 'blog/post_form.html'  # blog/post_form.html
-
-    # Check if the post author is the logged-in user
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
-
-# Delete a post
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Post
-    success_url = reverse_lazy('post-list')  # Redirect to post list after deletion
-    template_name = 'blog/post_confirm_delete.html'  # blog/post_confirm_delete.html
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
+  
