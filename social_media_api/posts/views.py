@@ -84,4 +84,64 @@ class UnlikePostView(generics.GenericAPIView):
             return Response({'error': 'Not liked'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'status': 'Post unliked'}, status=status.HTTP_200_OK)
+    
+# posts/views.py
+
+from django.shortcuts import get_object_or_404
+from rest_framework import status, generics
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import get_user_model
+from .models import Post, Like
+from .serializers import PostSerializer
+from notifications.models import Notification
+
+User = get_user_model()
+
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk, *args, **kwargs):
+        post = get_object_or_404(Post, pk=pk)
+        user = request.user
+
+        # Check if the user has already liked the post
+        if Like.objects.filter(user=user, post=post).exists():
+            return Response({'error': 'You have already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a new like
+        Like.objects.create(user=user, post=post)
+
+        # Generate notification for the post author
+        if post.author != user:
+            Notification.objects.create(
+                recipient=post.author,
+                actor=user,
+                verb='liked your post',
+                target=post
+            )
+
+        return Response({'status': 'Post liked'}, status=status.HTTP_200_OK)
+
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk, *args, **kwargs):
+        post = get_object_or_404(Post, pk=pk)
+        user = request.user
+
+        # Check if the user has liked the post
+        like = Like.objects.filter(user=user, post=post).first()
+        if not like:
+            return Response({'error': 'You have not liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Remove the like
+        like.delete()
+
+        # Optionally, generate a notification for the post author (if needed)
+        # This is optional, depending on if you want to notify when someone unlikes a post
+
+        return Response({'status': 'Post unliked'}, status=status.HTTP_200_OK)
+
 
