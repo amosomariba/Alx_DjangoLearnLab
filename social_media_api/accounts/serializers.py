@@ -3,6 +3,12 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
+# Example of FollowSerializer if you need one for validation or extra logic
+from rest_framework import serializers
+
+class FollowSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     # Password field as a CharField with write-only

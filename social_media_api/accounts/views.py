@@ -8,6 +8,9 @@ from .serializers import LoginSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer
+from rest_framework import generics, permissions, status
+from django.contrib.auth import get_user_model
+from .serializers import FollowSerializer
 
 User = get_user_model()
 
@@ -59,3 +62,28 @@ class UnfollowUserView(APIView):
 
         request.user.following.remove(target_user)
         return Response({'message': 'Unfollowed successfully.'}, status=status.HTTP_200_OK)
+    
+class FollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        try:
+            user_to_follow = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        request.user.following.add(user_to_follow)
+        return Response({'status': 'Following user'}, status=status.HTTP_200_OK)
+
+class UnfollowUserView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        try:
+            user_to_unfollow = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        request.user.following.remove(user_to_unfollow)
+        return Response({'status': 'Unfollowed user'}, status=status.HTTP_200_OK)
+
