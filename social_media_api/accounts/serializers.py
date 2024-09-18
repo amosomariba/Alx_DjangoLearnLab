@@ -4,7 +4,6 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 
-
 class RegisterSerializer(serializers.ModelSerializer):
     # Password field as a CharField with write-only
     password = serializers.CharField(write_only=True)
@@ -51,3 +50,10 @@ class LoginSerializer(serializers.Serializer):
         # Retrieve the token for the user
         token, created = Token.objects.get_or_create(user=user)
         return {'token': token.key}
+
+class UserSerializer(serializers.ModelSerializer):
+    following = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'following']
