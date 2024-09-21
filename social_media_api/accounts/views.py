@@ -81,6 +81,7 @@ class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['title', 'content']
+   
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
