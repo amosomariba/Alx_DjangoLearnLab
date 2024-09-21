@@ -4,10 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import PostSerializer, CommentSerializer, UserSerializer
-
-
 from .serializers import RegisterSerializer, LoginSerializer, FollowSerializer, PostSerializer, CommentSerializer, UserSerializer
-from .models import Post, Comment
+from .models import Post, Comment, CustomUser
 
 User = get_user_model()
 
@@ -33,6 +31,7 @@ class LoginView(APIView):
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = FollowSerializer
+    queryset = CustomUser.objects.all()
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
