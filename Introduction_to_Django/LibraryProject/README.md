@@ -67,6 +67,17 @@ To use the Django admin interface:
 - `LibraryProject/urls.py`: URL configuration.
 - `LibraryProject/wsgi.py` and `asgi.py`: Deployment entry points.
 
-## License
+## Django Admin Configuration for Book Model
 
-This project is for educational purposes.
+### Admin Registration
+The `Book` model is registered using the `@admin.register()` decorator in `bookshelf/admin.py`.
+
+### Admin Customization
+- `list_display`: Shows title, author, and publication year in the admin table.
+- `list_filter`: Enables filtering by author and publication year.
+- `search_fields`: Allows searching by book title or author name.
+
+### Accessing Admin
+- Run `python manage.py runserver`
+- Open [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+- Log in with the superuser credentials
